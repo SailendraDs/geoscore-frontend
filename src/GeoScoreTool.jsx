@@ -80,19 +80,15 @@ export default function GeoScoreTool() {
       // Map backend response to frontend format
       setScoreData({
         brand: extractBrandName(url),
-        total: data.score,  // Map score to total
-        score: data.score,  // Keep original score for reference
+        total: data?.score || 0,
         breakdown: {
-          // Map backend fields to frontend fields
-          recall: data.score_breakdown?.llm_recall || 0,
-          wiki: data.score_breakdown?.wikipedia_presence || 0,
-          seo: 0,  // Not in backend response
-          platforms: data.score_breakdown?.platform_visibility || 0,
-          web_presence: data.score_breakdown?.web_presence || 0
+          recall: data?.score_breakdown?.llm_recall || 0,
+          wiki: data?.score_breakdown?.wikipedia_presence || 0,
+          platforms: data?.score_breakdown?.platform_visibility || 0,
+          web_presence: data?.score_breakdown?.web_presence || 0
         },
-        suggestions: data.suggestions || [],
-        history_links: data.history_links || [],
-        // Include any other fields from the backend that might be useful
+        suggestions: data?.suggestions || [],
+        history_links: data?.history_links || [],
         ...data
       });
       setLogoUrl(fetchLogo(url));
