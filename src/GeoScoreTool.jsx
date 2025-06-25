@@ -45,8 +45,13 @@ export default function GeoScoreTool() {
     setLastCalculatedUrl(url);
 
     try {
+      // Use the VITE_API_URL from environment, fallback to empty string for relative path
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      const response = await fetch(`${apiUrl}/check-score`, {
+      const apiEndpoint = `${apiUrl}/check-score`;
+      
+      console.log('Making request to:', apiEndpoint);  // Debug log
+      
+      const response = await fetch(apiEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +63,14 @@ export default function GeoScoreTool() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorText = await response.text();
+        console.error('Error response:', errorText);  // Debug log
+        let errorData;
+        try {
+          errorData = JSON.parse(errorText);
+        } catch {
+          throw new Error(errorText || 'Failed to calculate score');
+        }
         throw new Error(errorData.detail || 'Failed to calculate score');
       }
 
