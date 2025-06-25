@@ -83,10 +83,11 @@ export default function GeoScoreTool() {
         total: data.score,  // Map score to total
         score: data.score,  // Keep original score for reference
         breakdown: {
-          recall: data.score_breakdown?.recall || 0,
-          wiki: data.score_breakdown?.wiki || 0,
-          seo: data.score_breakdown?.seo || 0,
-          platforms: data.score_breakdown?.platforms || 0,
+          // Map backend fields to frontend fields
+          recall: data.score_breakdown?.llm_recall || 0,
+          wiki: data.score_breakdown?.wikipedia_presence || 0,
+          seo: 0,  // Not in backend response
+          platforms: data.score_breakdown?.platform_visibility || 0,
           web_presence: data.score_breakdown?.web_presence || 0
         },
         suggestions: data.suggestions || [],
