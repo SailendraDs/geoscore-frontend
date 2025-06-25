@@ -45,7 +45,8 @@ export default function GeoScoreTool() {
     setLastCalculatedUrl(url);
 
     try {
-      const response = await fetch('/api/check-score', {
+      const apiUrl = import.meta.env.VITE_API_URL || '';
+      const response = await fetch(`${apiUrl}/check-score`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
