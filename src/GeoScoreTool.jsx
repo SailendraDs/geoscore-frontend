@@ -75,7 +75,25 @@ export default function GeoScoreTool() {
       }
 
       const data = await response.json();
-      setScoreData(data);
+      console.log('API Response:', data);  // Debug log
+      
+      // Map backend response to frontend format
+      setScoreData({
+        brand: extractBrandName(url),
+        total: data.score,  // Map score to total
+        score: data.score,  // Keep original score for reference
+        breakdown: {
+          recall: data.score_breakdown?.recall || 0,
+          wiki: data.score_breakdown?.wiki || 0,
+          seo: data.score_breakdown?.seo || 0,
+          platforms: data.score_breakdown?.platforms || 0,
+          web_presence: data.score_breakdown?.web_presence || 0
+        },
+        suggestions: data.suggestions || [],
+        history_links: data.history_links || [],
+        // Include any other fields from the backend that might be useful
+        ...data
+      });
       setLogoUrl(fetchLogo(url));
     } catch (err) {
       console.error('Error calculating score:', err);
